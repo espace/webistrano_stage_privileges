@@ -1,0 +1,32 @@
+<!--alimaher-->
+<%% if @stage.users.empty? %>
+  <br/>
+    No users added yet.<br />
+  <br/>
+<%% else %>
+  <table class="sortable">
+    <%% for user in @stage.users %>
+      <tr class="<%%= cycle :even, :odd, :name => 'users'  %>">
+      	<!--alimaher-->
+        <td nowrap><%%= link_to h("#{user.login} (#{user.access(@stage)})"), user_path(user) %></td>
+        <!--end alimaher-->
+        <%% if current_user.admin? -%>
+          <td><%%= link_to 'Remove', project_stage_stage_user_path(@stage.project, @stage, user), :confirm => 'Are you sure?', :method => :delete %></td>
+        <%% end -%>
+      </tr>
+    <%% end %>
+  </table>
+<%% end %>
+
+<%% if current_user.admin? %>
+<form action='<%%=project_stage_stage_users_path(@stage.project,@stage)%>' method='post'>
+	<label>Add user: </label>
+	<%%=select 'stage_user', 'id', @stage.project.users.reject{|u| @stage.user_ids.include?(u.id)}.collect{|u| [u.login, u.id]}%>
+	<!--alimaher-->
+	<%%= check_box 'stage_user','read_only', {:checked => false, :class => 'noframe'} %>
+    <label for="read_only">read only</label>
+    <!--end alimaher--> 
+	<input type='submit' value='Add' />
+</form>
+<%%end%>
+<!--end alimaher-->

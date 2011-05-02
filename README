@@ -1,0 +1,24 @@
+WebistranoStagePrivileges
+====================
+
+webistrano_stage_privileges is a simple Rails plugin that improves access control to Webistrano-1.5 which is intruduced by previous plugin 'webistrano_privileges'. Webistrano_stage_privileges is sponsored by PopCap Games.  After applying the plugin to your working webistrano project copy with webistrano_privileges previously installed, and running two shell commands, webistrano will be accomodating a simple access control scheme to different project stages in addition to the project access control introduced by the previous plugin. Admins can manipulate all project stages to assign users with full access or read only access to different stages. Non-admins can manipulate only THEIR project stages. Admins can add and remove users to different stages by selecting them out of project users.
+
+What the plugin basically does is:
+- it generates a migration for a many-to-many relation between users and stages.
+- it generates a route and a controller for adding and removing users from stages
+- it replaces some views to present the added functionality.
+- it introduces some logic to secure unauthorized access (full/read only) to stages from non-related users. 
+
+
+After installing the plugin:
+============================
+- run the generate command, accept whenever prompted for overwriting existing files:
+
+	>> ruby script/generate stage_privileges_extensions
+	
+- migrate
+
+	>> rake db:migrate RAILS_ENV=production
+
+
+===========================================================================
