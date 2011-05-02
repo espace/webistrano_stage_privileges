@@ -26,6 +26,10 @@ class StagePrivilegesExtensionsGenerator < Rails::Generator::Base
   	end\n
 	def access(stage)\n
 		(stages_user.find_by_stage_id(stage.id).read_only?)? 'read only' : 'full access'\n
+	end\n
+	def project_stages(project)\n
+		return stages if !stages\n
+	  	stages.select{|stage| stage.project.id == project.id}\n
 	end\n"
 	end
 
