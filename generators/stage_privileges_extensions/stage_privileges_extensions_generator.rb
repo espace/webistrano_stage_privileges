@@ -33,7 +33,7 @@ class StagePrivilegesExtensionsGenerator < Rails::Generator::Base
 	end\n"
 	end
 
-	m.gsub_file 'app/controllers/project_users_controller.rb', /(#{Regexp.escape("def destroy")})/mi do |match|
+	m.gsub_file 'app/controllers/project_users_controller.rb', /(#{Regexp.escape("@project.users.delete @project_user if @project.user_ids.include?(@project_user.id)")})/mi do |match|
 		"#{match}\n    
 	   	@project.stages.each do |stage|\n
 	    		stage.users.delete @project_user if stage.user_ids.include?(@project_user.id)\n
@@ -45,7 +45,7 @@ class StagePrivilegesExtensionsGenerator < Rails::Generator::Base
 	#deployments_controller
 	#1
 	m.gsub_file 'app/controllers/deployments_controller.rb', /(#{Regexp.escape("before_filter :load_stage")})/mi do |match|
-	"#{match}\n  before_filter :ensure_user_access\n"
+	"#{match}\n  before_filter :ensure_user_access, :except => [:show, :latest, :index]\n"
 	end
 	#2
 	m.gsub_file 'app/controllers/deployments_controller.rb', /(#{Regexp.escape("protected")})/mi do |match|
